@@ -1,0 +1,12 @@
+# Artifacts and documentation
+.gemini/
+**/*.md
+!README.md
+
+# Python
+__pycache__/
+*.py
+*.pyc
+
+# Backups
+*.backup

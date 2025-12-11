@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Code Graph Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container"></div>
+    
+    <!-- Info Panel -->
+    <div id="info-panel" class="info-panel hidden">
+        <div class="panel-header">
+            <span id="node-title">Node Details</span>
+            <button id="close-panel" class="close-btn">×</button>
+        </div>
+        <div class="panel-content">
+            <div class="info-section">
+                <span class="label">Type:</span>
+                <span id="node-type" class="value">-</span>
+            </div>
+            <div class="info-section">
+                <span class="label">Name:</span>
+                <span id="node-name" class="value">-</span>
+            </div>
+            <div class="info-section">
+                <span class="label">Connections:</span>
+                <span id="node-connections" class="value">-</span>
+            </div>
+            <div class="code-preview">
+                <div class="label">Code Preview:</div>
+                <pre id="node-code"><code>// Click a node to see details</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading UI -->
+    <div id="loading" class="loading">
+        <div class="loading-text">Initializing Graph...</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
