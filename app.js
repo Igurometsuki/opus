@@ -275,7 +275,8 @@ function createNode(data, position) {
         config,
         pulsePhase: Math.random() * Math.PI * 2,
         initialScale,
-        targetScale: 1.0
+        targetScale: 1.0,
+        rotationVel: 0.0
     };
 }
 
@@ -530,13 +531,21 @@ function animateNode(node) {
 
         // ROTATE selected node for emphasis
         if (node === selectedNode) {
-            node.mesh.rotation.y += 0.02; // Continuous rotation
-            node.mesh.rotation.x += 0.01;
+            node.rotationVel = 0.01;
+        } else {
+            node.rotationVel += 0.20 * (1/60);
+            if (node.rotationVel > 1.0) node.rotationVel = 1.0;
         }
     } else {
         node.mesh.scale.set(baseScale * pulse, baseScale * pulse, baseScale * pulse);
         node.mesh.material.emissiveIntensity = node.config.emissiveIntensity;
     }
+
+    node.rotationVel -= 0.10 * (1/60);
+    if (node.rotationVel < 0.0) node.rotationVel = 0.0;
+
+    node.mesh.rotation.y += 2 * node.rotationVel;
+    node.mesh.rotation.x += node.rotationVel;
 
     // Update glow
     if (node.glowMesh) {
