@@ -556,8 +556,8 @@ function animateNode(node) {
         if (node === selectedNode) {
             node.rotationVel = 0.01;
         } else {
-            // Accelerate rotation on hover
-            node.rotationVel += 0.04 * (1 / 60);
+            // Accelerate rotation on hover (60% of original for smooth effect)
+            node.rotationVel += 0.12 * (1 / 60);
             if (node.rotationVel > 1.0) node.rotationVel = 1.0;
         }
     } else {
