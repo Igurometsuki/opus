@@ -23,7 +23,8 @@ public:
             float x = std::cos(theta) * radiusAtY;
             float z = std::sin(theta) * radiusAtY;
             
-            positions.push_back(Vec3(x * radius, y * radius, z * radius));
+            // NOTE: swap x and y to avoid making a coordinate factor of (0, 1, 0) causing gimbal lock bug
+            positions.push_back(Vec3(y * radius, x * radius, z * radius));
         }
         
         return positions;

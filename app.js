@@ -486,6 +486,10 @@ function animate() {
     // Gentle auto-rotation of camera
     if (!controls.enabled || !selectedNode) {
         scene.rotation.y += 0.0005;
+    } else {
+        // Fix the rotation back to 0 smoothly
+        // TODO: replace with better type of interpolation
+        if (scene.rotation.y > 0) scene.rotation.y -= 0.0050;
     }
 
     controls.update();
@@ -552,17 +556,18 @@ function animateNode(node) {
     const baseScale = node.targetScale;
 
     if (node === hoveredNode || node === selectedNode) {
-        // Highlighted nodes pulse more
-        const highlightScale = baseScale * (1.2 + Math.sin(animationTime * 4) * 0.1);
+        // Highlighted nodes pulse more, starting at max scale for emphasis
+        const highlightScale = 1.2 + Math.cos(node.hoverTime * 4) * 0.1;
         node.mesh.scale.set(highlightScale, highlightScale, highlightScale);
         node.mesh.material.emissiveIntensity = 0.8 + Math.sin(animationTime * 3) * 0.2;
+
+        // Track hover time
+        node.hoverTime += 1 / 60;
 
         // ROTATE selected/hovered node with acceleration
         if (node === selectedNode) {
             node.rotationVel = 0.01;
         } else {
-            // Track hover time
-            node.hoverTime += 1 / 60;
 
             // Gentle acceleration for first 2 seconds only
             if (node.hoverTime < 2.0) {
