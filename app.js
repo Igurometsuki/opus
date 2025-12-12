@@ -482,6 +482,10 @@ function animate() {
     // Gentle auto-rotation of camera
     if (!controls.enabled || !selectedNode) {
         scene.rotation.y += 0.0005;
+    } else {
+        // Fix the rotation back to 0 smoothly
+        // TODO: replace with better type of interpolation
+        if (scene.rotation.y > 0) scene.rotation.y -= 0.0050;
     }
 
     controls.update();
