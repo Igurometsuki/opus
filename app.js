@@ -562,7 +562,7 @@ function animateNode(node) {
 
             // Only accelerate for first 4 seconds, then maintain constant velocity
             if (node.hoverTime < 4.0) {
-                node.rotationVel += 0.12 * (1 / 60);
+                node.rotationVel += 0.03 * (1 / 60);
                 if (node.rotationVel > 1.0) node.rotationVel = 1.0;
             }
             // After 5 seconds, rotationVel stays constant (no more acceleration)
