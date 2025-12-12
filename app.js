@@ -560,8 +560,8 @@ function animateNode(node) {
             // Track hover time
             node.hoverTime += 1 / 60;
 
-            // Only accelerate for first 5 seconds, then maintain constant velocity
-            if (node.hoverTime < 5.0) {
+            // Only accelerate for first 4 seconds, then maintain constant velocity
+            if (node.hoverTime < 4.0) {
                 node.rotationVel += 0.12 * (1 / 60);
                 if (node.rotationVel > 1.0) node.rotationVel = 1.0;
             }
