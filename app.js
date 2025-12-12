@@ -274,6 +274,10 @@ function createNode(data, position) {
         geometry = new THREE.IcosahedronGeometry(size * 1.1, 0);
     }
 
+    // CRITICAL: Center the geometry to ensure perfect rotation around geometric center
+    // This computes bounding box and translates vertices so center is at (0,0,0)
+    geometry.center();
+
     // Create material with glow
     const material = new THREE.MeshStandardMaterial({
         color: config.color,
@@ -590,9 +594,9 @@ function animateNode(node) {
         node.glowMesh.material.opacity = 0.2 + Math.sin(animationTime * 2 + node.pulsePhase) * 0.1;
     }
 
-    // Gentle floating motion - EXCEPT for selected node (needs to stay stable for camera)
-    if (node === selectedNode) {
-        // Keep selected node at exact base position for stable camera focus
+    // Gentle floating motion - EXCEPT for selected/hovered nodes (keep still for clean rotation)
+    if (node === selectedNode || node === hoveredNode) {
+        // Keep node at exact base position for stable rotation
         node.mesh.position.set(node.position.x, node.position.y, node.position.z);
         if (node.glowMesh) {
             node.glowMesh.position.copy(node.mesh.position);
