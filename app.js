@@ -299,7 +299,8 @@ function createNode(data, position) {
         pulsePhase: Math.random() * Math.PI * 2,
         initialScale,
         targetScale: 1.0,
-        rotationVel: 0.0  // Physics-based rotation velocity
+        rotationVel: 0.0,  // Physics-based rotation velocity
+        hoverTime: 0.0  // Track how long node has been hovered
     };
 }
 
@@ -556,18 +557,27 @@ function animateNode(node) {
         if (node === selectedNode) {
             node.rotationVel = 0.01;
         } else {
-            // Accelerate rotation on hover
-            node.rotationVel += 0.20 * (1 / 60);
-            if (node.rotationVel > 1.0) node.rotationVel = 1.0;
+            // Track hover time
+            node.hoverTime += 1 / 60;
+
+            // Gentle acceleration for first 4 seconds only
+            if (node.hoverTime < 4.0) {
+                node.rotationVel += 0.03 * (1 / 60);
+                if (node.rotationVel > 1.0) node.rotationVel = 1.0;
+            }
+            // After 4s, rotationVel stays constant
         }
     } else {
         node.mesh.scale.set(baseScale * pulse, baseScale * pulse, baseScale * pulse);
         node.mesh.material.emissiveIntensity = node.config.emissiveIntensity;
-    }
 
-    // Decelerate rotation when not hovering
-    node.rotationVel -= 0.10 * (1 / 60);
-    if (node.rotationVel < 0.0) node.rotationVel = 0.0;
+        // Reset hover time when not hovering
+        node.hoverTime = 0.0;
+
+        // Decelerate rotation ONLY when not hovering
+        node.rotationVel -= 0.10 * (1 / 60);
+        if (node.rotationVel < 0.0) node.rotationVel = 0.0;
+    }
 
     // Apply velocity-based rotation
     node.mesh.rotation.y += 2 * node.rotationVel;
