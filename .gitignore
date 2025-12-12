@@ -2,6 +2,7 @@
 .gemini/
 **/*.md
 !README.md
+!WASM_SETUP.md
 
 # Python
 __pycache__/
@@ -10,3 +11,10 @@ __pycache__/
 
 # Backups
 *.backup
+
+# Emscripten SDK (download locally, don't commit)
+emsdk/
+
+# Build output (generated files)
+build/
+

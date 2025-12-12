@@ -13,6 +13,9 @@ let animationTime = 0;
 let introAnimationProgress = 0;
 const INTRO_DURATION = 3; // seconds
 
+// C++ WASM Engine
+let OpusModule = null;
+
 // Node type configurations
 const NODE_TYPES = {
     module: {
@@ -198,16 +201,36 @@ function createGraph() {
 }
 
 function calculateNodePositions() {
-    // Position nodes on sphere surface (like cities on a globe)
+    // Use C++ backend for Fibonacci sphere distribution
+    if (OpusModule) {
+        const radius = 12; // Globe radius
+        const nodeCount = graphData.nodes.length;
+
+        // Call C++ function
+        const cppPositions = OpusModule.calculateFibonacciSphere(nodeCount, radius);
+
+        // Convert C++ vector to JS array
+        const positions = [];
+        for (let i = 0; i < cppPositions.size(); i++) {
+            const vec = cppPositions.get(i);
+            positions.push({
+                x: vec.x,
+                y: vec.y,
+                z: vec.z
+            });
+        }
+
+        return positions;
+    }
+
+    // Fallback to JavaScript if WASM not loaded
+    console.warn('WASM module not loaded, using JS fallback');
     const positions = [];
-    const radius = 12; // Globe radius
+    const radius = 12;
 
     graphData.nodes.forEach((node, index) => {
-        // Fibonacci sphere distribution for even spacing
         const phi = Math.acos(-1 + (2 * index) / graphData.nodes.length);
         const theta = Math.sqrt(graphData.nodes.length * Math.PI) * phi;
-
-        // Place exactly on sphere surface (no offset)
         positions.push({
             x: radius * Math.cos(theta) * Math.sin(phi),
             y: radius * Math.cos(phi),
@@ -736,4 +759,17 @@ function onWindowResize() {
 // Start Application
 // ========================================
 
-window.addEventListener('DOMContentLoaded', init);
+window.addEventListener('DOMContentLoaded', async () => {
+    // Initialize C++ WASM module first
+    try {
+        console.log('Loading OpusEngine WASM module...');
+        OpusModule = await OpusEngine();
+        console.log('✓ OpusEngine loaded successfully');
+    } catch (error) {
+        console.error('Failed to load OpusEngine:', error);
+        console.warn('Continuing with JavaScript fallback');
+    }
+
+    // Start the app
+    init();
+});
