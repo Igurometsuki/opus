@@ -573,11 +573,11 @@ function animateNode(node) {
 
         // Reset hover time when not hovering
         node.hoverTime = 0.0;
-    }
 
-    // Decelerate rotation when not hovering
-    node.rotationVel -= 0.10 * (1 / 60);
-    if (node.rotationVel < 0.0) node.rotationVel = 0.0;
+        // Decelerate rotation when not hovering
+        node.rotationVel -= 0.10 * (1 / 60);
+        if (node.rotationVel < 0.0) node.rotationVel = 0.0;
+    }
 
     // Apply velocity-based rotation
     node.mesh.rotation.y += 2 * node.rotationVel;
