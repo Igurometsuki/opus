@@ -11,3 +11,4 @@ open_engine.js:
 
 clean:
 	rm build/opus_engine.js
+	rm build/opus_engine.wasm

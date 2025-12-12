@@ -548,18 +548,18 @@ function animateNode(node) {
     const baseScale = node.targetScale;
 
     if (node === hoveredNode || node === selectedNode) {
-        // Highlighted nodes pulse more
-        const highlightScale = baseScale * (1.2 + Math.sin(animationTime * 4) * 0.1);
+        // Highlighted nodes pulse more, starting at max scale for emphasis
+        const highlightScale = 1.2 + Math.cos(node.hoverTime * 4) * 0.1;
         node.mesh.scale.set(highlightScale, highlightScale, highlightScale);
         node.mesh.material.emissiveIntensity = 0.8 + Math.sin(animationTime * 3) * 0.2;
+
+        // Track hover time
+        node.hoverTime += 1 / 60;
 
         // ROTATE selected/hovered node with acceleration
         if (node === selectedNode) {
             node.rotationVel = 0.01;
         } else {
-            // Track hover time
-            node.hoverTime += 1 / 60;
-
             // Only accelerate for first 4 seconds, then maintain constant velocity
             if (node.hoverTime < 4.0) {
                 node.rotationVel += 0.03 * (1 / 60);
