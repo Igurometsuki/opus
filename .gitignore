@@ -3,6 +3,8 @@
 **/*.md
 !README.md
 !WASM_SETUP.md
+# Keep full docs local only
+README_FULL.md
 
 # Python
 __pycache__/
