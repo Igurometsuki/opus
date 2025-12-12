@@ -305,7 +305,7 @@ function createNode(data, position) {
 
 function createNodeGlow(node) {
     // Create a larger transparent sphere around the node for glow effect
-    const glowGeometry = new THREE.SphereGeometry(node.config.size * 1.5, 16, 16);
+    const glowGeometry = new THREE.SphereGeometry(node.config.size * 1.5, 12, 12);
     const glowMaterial = new THREE.MeshBasicMaterial({
         color: node.config.color,
         transparent: true,
@@ -557,7 +557,7 @@ function animateNode(node) {
             node.rotationVel = 0.01;
         } else {
             // Accelerate rotation on hover
-            node.rotationVel += 0.20 * (1 / 60);
+            node.rotationVel += 0.04 * (1 / 60);
             if (node.rotationVel > 1.0) node.rotationVel = 1.0;
         }
     } else {
